@@ -28,7 +28,7 @@ CREATE TABLE styles (
   style_id INT PRIMARY KEY,
   product_id INT NOT NULL,
   name VARCHAR(50) NOT NULL,
-  sale_price VARCHAR(15) NOT NULL,
+  sale_price VARCHAR(15) NULL,
   original_price VARCHAR(15) NOT NULL,
   default_style boolean,
   FOREIGN KEY(product_id)
