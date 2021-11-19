@@ -28,7 +28,7 @@ CREATE TABLE styles (
   style_id INT PRIMARY KEY,
   product_id INT NOT NULL,
   name VARCHAR(50) NOT NULL,
-  sale_price VARCHAR(15) NULL,
+  sale_price VARCHAR(15) NOT NULL,
   original_price VARCHAR(15) NOT NULL,
   default_style boolean,
   FOREIGN KEY(product_id)
@@ -57,7 +57,7 @@ CREATE TABLE photos (
 	REFERENCES styles(style_id)
 );
 
-\COPY photos(id, style_id, url, thumbnail_url) FROM '/Users/elton/Desktop/data/photos.csv' DELIMITER ',' CSV HEADER;
+\COPY photos(id, style_id, url, thumbnail_url) FROM '/Users/elton/Desktop/data/photos_fixed.csv' DELIMITER ',' CSV HEADER;
 
 CREATE TABLE related_products (
   id INT PRIMARY KEY,

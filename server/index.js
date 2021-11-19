@@ -20,10 +20,10 @@ app.get('/api/products/*', async (req, res) => {
     prod_id = prod_id.replace('/styles', '');
     response.product_id = prod_id;
     console.log(prod_id);
-    let info = await db.query(`select s.style_id, s.name, s.original_price, s.sale_price, s.default_style as "default?", json_agg(json_build_object('thumbnail_url', p.thumbnail_url, 'url', p.url)) photos from photos as p left join styles as s on s.style_id = p.style_id and s.product_id = ${prod_id} group by s.style_id`);
-    // for (let obj of info) {
-    //   obj.skus = await db.query(`select json_object_agg(id, json_build_object('quantity', quantity, 'size', size)) skus from skus where style_id = ${obj['style_id']}`);
-    // };
+    let info = await db.query(`select s.style_id, s.name, s.original_price, s.sale_price, s.default_style as "default?", json_agg(json_build_object('thumbnail_url', p.thumbnail_url, 'url', p.url)) photos from styles as s inner join photos as p on s.style_id = p.style_id and s.product_id = ${prod_id} group by s.style_id`);
+    for (let obj of info) {
+      obj.skus = await db.query(`select json_object_agg(id, json_build_object('quantity', quantity, 'size', size)) skus from skus where style_id = ${obj['style_id']}`);
+    };
     // let info = await db.query(`select styles.style_id as style_id, styles.product_name as name, styles.original_price, styles.sale_price, styles.default_style as "default?", json_agg(json_build_object('url', photos.url, 'thumbnail_url', photos.thumbnail_url)) photos, json_object_agg(skus.id, json_build_object('quantity', skus.quantity, 'size', skus.size)) skus from photos inner join styles on styles.product_id = ${prod_id} and styles.style_id = photos.style_id inner join skus on styles.style_id = skus.style_id group by styles.style_id`);
     // let skus = await db.query(`select json_object_agg(id, json_build_object('quantity', quantity, 'size', size)) skus from skus where style_id = products.style_id`);
     // console.log(skus, 'test');
