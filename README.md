@@ -24,7 +24,13 @@ Clean data:
 brew services start postgresql
 psql -U postgres -h localhost
 
-
+Install repo:
+  npm install
+  g++ dbfixer.cc
+  python3 download.py <file_id> <output_file_name>
+  move files if you wish
+  change the directory for where the csv files are located within overview.sql
+  
 
 
 Quit:
@@ -39,9 +45,14 @@ Run command
 >psql postgres -f `file path of overview.sql`
 
 linux:
-sudo apt  install postgresql postgresql-contrib
+sudo apt install postgresql postgresql-contrib
 sudo -u postgres psql to connect to database
 \q to leave
+Create a user and give the user superuser and a password
+https://medium.com/coding-blocks/creating-user-database-and-adding-access-on-postgresql-8bfcd2f4a91e
+ALTER USER myuser WITH SUPERUSER;
+Navigate to /SDC-Product-Overview/data
+psql postgres -h 127.0.0.1 -f overview.sql
 
 
 

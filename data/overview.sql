@@ -11,7 +11,7 @@ CREATE TABLE products (
   default_price VARCHAR(20) NOT NULL
 );
 
- \COPY products(id, name, slogan, description, category, default_price) FROM '/Users/elton/Desktop/data/product.csv' DELIMITER ',' CSV HEADER;
+ \COPY products(id, name, slogan, description, category, default_price) FROM 'filepath/product.csv' DELIMITER ',' CSV HEADER;
 
 CREATE TABLE features (
   id INT PRIMARY KEY,
@@ -22,7 +22,7 @@ CREATE TABLE features (
 	REFERENCES products(id)
 );
 
-\COPY features(id, product_id, feature, value) FROM '/Users/elton/Desktop/data/features.csv' DELIMITER ',' CSV HEADER;
+\COPY features(id, product_id, feature, value) FROM 'filepath/features.csv' DELIMITER ',' CSV HEADER;
 
 CREATE TABLE styles (
   style_id INT PRIMARY KEY,
@@ -35,7 +35,7 @@ CREATE TABLE styles (
 	REFERENCES products(id)
 );
 
-\COPY styles(style_id, product_id, name, sale_price, original_price, default_style) FROM '/Users/elton/Desktop/data/styles.csv' DELIMITER ',' CSV HEADER;
+\COPY styles(style_id, product_id, name, sale_price, original_price, default_style) FROM 'filepath/styles.csv' DELIMITER ',' CSV HEADER;
 
 CREATE TABLE skus (
   id INT PRIMARY KEY,
@@ -46,7 +46,7 @@ CREATE TABLE skus (
 	REFERENCES styles(style_id)
 );
 
-\COPY skus(id, style_id, size, quantity) FROM '/Users/elton/Desktop/data/skus.csv' DELIMITER ',' CSV HEADER;
+\COPY skus(id, style_id, size, quantity) FROM 'filepath/skus.csv' DELIMITER ',' CSV HEADER;
 
 CREATE TABLE photos (
   id INT PRIMARY KEY,
@@ -57,7 +57,7 @@ CREATE TABLE photos (
 	REFERENCES styles(style_id)
 );
 
-\COPY photos(id, style_id, url, thumbnail_url) FROM '/Users/elton/Desktop/data/photos_fixed.csv' DELIMITER ',' CSV HEADER;
+\COPY photos(id, style_id, url, thumbnail_url) FROM 'filepath/photos_fixed.csv' DELIMITER ',' CSV HEADER;
 
 CREATE TABLE related_products (
   id INT PRIMARY KEY,
@@ -69,7 +69,7 @@ CREATE TABLE related_products (
 	REFERENCES products(id)
 );
 
-\COPY related_products(id, current_product_id, related_product_id) FROM '/Users/elton/Desktop/data/related.csv' DELIMITER ',' CSV HEADER;
+\COPY related_products(id, current_product_id, related_product_id) FROM 'filepath/related.csv' DELIMITER ',' CSV HEADER;
 
 CREATE INDEX features_index ON features using btree(product_id);
 
