@@ -22,5 +22,8 @@
     "nodemon": "^2.0.15",
     "pg-promise": "^10.11.1",
     "postgres": "^1.0.2"
+  },
+  "devDependencies": {
+    "supertest": "^6.1.6"
   }
 }

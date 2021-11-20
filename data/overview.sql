@@ -71,3 +71,12 @@ CREATE TABLE related_products (
 
 \COPY related_products(id, current_product_id, related_product_id) FROM '/Users/elton/Desktop/data/related.csv' DELIMITER ',' CSV HEADER;
 
+CREATE INDEX features_index ON features using btree(product_id);
+
+CREATE INDEX related_index ON related_products using btree(current_product_id);
+
+CREATE INDEX styles_index ON styles using btree(product_id);
+
+CREATE INDEX photos_index ON photos using btree(style_id);
+
+CREATE INDEX skus_index ON skus using btree(style_id);

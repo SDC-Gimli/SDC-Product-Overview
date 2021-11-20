@@ -2,45 +2,30 @@ const express = require('express');
 const db = require('../data/db.js');
 const path = require('path');
 const axios = require('axios');
+const overview = require('../data/overview.js');
 const app = express();
 const port = 3000;
-// console.log(__dirname);
-// console.log(path.join(__dirname, '../auth.js'));
-// console.log(path.join(__dirname, '../client/dist/'));
 const apiUrl = 'https://app-hrsei-api.herokuapp.com/api/fec2/hr-rfp/';
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.get('/api/products/*', async (req, res) => {
   console.log('url: ', req.originalUrl);
-  let prod_id = req.originalUrl.replace('/api/products/', '');
-  console.log(prod_id, 'product id');
+  let product_id = req.originalUrl.replace('/api/products/', '');
+  console.log(product_id, 'product id');
   let response = {};
   if (req.originalUrl.includes('styles')) {
-    prod_id = prod_id.replace('/styles', '');
-    response.product_id = prod_id;
-    console.log(prod_id);
-    let info = await db.query(`select s.style_id, s.name, s.original_price, s.sale_price, s.default_style as "default?", json_agg(json_build_object('thumbnail_url', p.thumbnail_url, 'url', p.url)) photos from styles as s inner join photos as p on s.style_id = p.style_id and s.product_id = ${prod_id} group by s.style_id`);
-    for (let obj of info) {
-      obj.skus = await db.query(`select json_object_agg(id, json_build_object('quantity', quantity, 'size', size)) skus from skus where style_id = ${obj['style_id']}`);
-    };
-    // let info = await db.query(`select styles.style_id as style_id, styles.product_name as name, styles.original_price, styles.sale_price, styles.default_style as "default?", json_agg(json_build_object('url', photos.url, 'thumbnail_url', photos.thumbnail_url)) photos, json_object_agg(skus.id, json_build_object('quantity', skus.quantity, 'size', skus.size)) skus from photos inner join styles on styles.product_id = ${prod_id} and styles.style_id = photos.style_id inner join skus on styles.style_id = skus.style_id group by styles.style_id`);
-    // let skus = await db.query(`select json_object_agg(id, json_build_object('quantity', quantity, 'size', size)) skus from skus where style_id = products.style_id`);
-    // console.log(skus, 'test');
-    console.log(info,'what')
+    product_id = product_id.replace('/styles', '');
+    response.product_id = product_id;
+    let info = await overview.getStyles(product_id);
     response.results = info;
     res.send(response);
   } else if (req.originalUrl.includes('related')) {
-    prod_id = prod_id.replace('/related', '');
-    let info = await db.query(`select related_product_id from related_products where current_product_id = ${prod_id}`);
-    let related_arr = info.map(obj => {
-      return obj['related_product_id'];
-    });
-    console.log(related_arr);
+    product_id = product_id.replace('/related', '');
+    let related_arr = await overview.getRelated(product_id);
     res.send(related_arr);
   } else {
-  let info = await db.query(`select products.id, products.name, products.slogan, products.description, products.category, products.default_price, json_agg (json_build_object ('feature', features.feature, 'value', features.value)) as features from products inner join features on products.id = features.product_id and products.id = ${prod_id} group by products.id`);
-  response = info;
+  response = await overview.getInfo(product_id);
   res.send(response);
   }
 });
@@ -141,23 +126,3 @@ app.get('/api/products/*', async (req, res) => {
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`)
 });
-
-
-// app.get('/api/*', (req, res) => {
-//   console.log('get api: ');
-//   console.log(req.originalUrl);
-//   const postfix = req.originalUrl.replace('/api/', '');
-//   axios({
-//     method: 'get',
-//     url: apiUrl + postfix,
-//     headers: {'Authorization': key, 'Accept-encoding': 'gzip, deflate'},
-//     data: req.body,
-//   }).then((results) => {
-//     //console.log(results.data);
-//     res.json((results.data));
-//   }).catch((error) => {
-//     res.status(error.response.status);
-//     // console.log(error.response.data);
-//     res.json(error.response.data);
-//   });
-// });
