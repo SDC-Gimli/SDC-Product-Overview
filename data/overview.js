@@ -1,10 +1,10 @@
 const db = require('./db.js');
 
-
 async function getStyles(product_id) {
   let result = await db.query(`select s.style_id, s.name, s.original_price, s.sale_price, s.default_style as "default?", json_agg(json_build_object('thumbnail_url', p.thumbnail_url, 'url', p.url)) photos from styles as s inner join photos as p on s.style_id = p.style_id and s.product_id = ${product_id} group by s.style_id`);
   for (let obj of result) {
-    obj.skus = await db.query(`select json_object_agg(id, json_build_object('quantity', quantity, 'size', size)) skus from skus where style_id = ${obj['style_id']}`);
+    obj.skus = await db.one(`select json_object_agg(id, json_build_object('quantity', quantity, 'size', size)) skus from skus where style_id = ${obj['style_id']}`);
+    obj.skus = obj.skus['skus'];
   }
   return result;
 };
@@ -19,6 +19,8 @@ async function getRelated(product_id) {
   let related_arr = info.map(obj => {
     return obj['related_product_id'];
    });
+   const zeroIndex = related_arr.indexOf(0);
+   related_arr.splice(zeroIndex, 1);
    return related_arr;
 };
 
