@@ -1,5 +1,16 @@
 const db = require('./db.js');
 
+async function getAllStyles(page, count) {
+  if (page < 1 || count < 1) {
+    return 0;
+  }
+  let queryPage = page || 1;
+  let queryCount = count || 5;
+  queryPage = (queryPage - 1) * queryCount;
+  let result = await db.query(`select * from products order by id offset ${queryPage} limit ${queryCount}`);
+  return result;
+}
+
 async function getStyles(product_id) {
   let result = await db.query(`select s.style_id, s.name, s.original_price, s.sale_price, s.default_style as "default?", json_agg(json_build_object('thumbnail_url', p.thumbnail_url, 'url', p.url)) photos from styles as s inner join photos as p on s.style_id = p.style_id and s.product_id = ${product_id} group by s.style_id`);
   for (let obj of result) {
@@ -25,6 +36,7 @@ async function getRelated(product_id) {
 };
 
 module.exports = {
+  getAllStyles,
   getStyles,
   getInfo,
   getRelated,

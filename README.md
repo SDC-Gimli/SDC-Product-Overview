@@ -54,7 +54,7 @@ https://medium.com/coding-blocks/creating-user-database-and-adding-access-on-pos
 ALTER USER myuser WITH SUPERUSER;
 Navigate to /SDC-Product-Overview/data
 psql postgres -h 127.0.0.1 -f overview.sql
-
+alter data/db.js with postgres info and pw 
 
 
 *Testing*
