@@ -27,10 +27,11 @@ psql -U postgres -h localhost
 Install repo:
   npm install
   g++ dbfixer.cc
+  ./a.out photos.csv photos_fixed.csv
   python3 download.py <file_id> <output_file_name>
   move files if you wish
   change the directory for where the csv files are located within overview.sql
-  
+
 
 
 Quit:

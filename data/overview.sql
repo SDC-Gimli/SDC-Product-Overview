@@ -11,7 +11,7 @@ CREATE TABLE products (
   default_price VARCHAR(20) NOT NULL
 );
 
- \COPY products(id, name, slogan, description, category, default_price) FROM 'filepath/product.csv' DELIMITER ',' CSV HEADER;
+\COPY products(id, name, slogan, description, category, default_price) FROM 'filepath/product.csv' DELIMITER ',' CSV HEADER;
 
 CREATE TABLE features (
   id INT PRIMARY KEY,

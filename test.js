@@ -1,14 +1,3 @@
-// import http from 'k6/http';
-// import { sleep } from 'k6';
-// const overview = require('./data/overview.js');
-
-
-// export default function () {
-//   // http.get('https://test.k6.io');
-//   http.get('localhost:3000/api/products/1');
-//   sleep(1);
-// }
-
 const overview = require('./data/overview.js');
 const { performance } = require('perf_hooks');
 const product_id = 4;
