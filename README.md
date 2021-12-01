@@ -8,6 +8,7 @@ Install data by downloading files from [Google drive](https://drive.google.com/d
 
 *Install data by running the following commands in terminal.  file_id can be found from `https://drive.google.com/file/d/<file_id>/view?usp=sharing` when clicking `Get Link` on a file*
 ```
+sudo apt-get update
 sudo apt install python3-pip
 pip3 install gdown
 python3 download.py <file_id> <output_file_name>
@@ -40,7 +41,9 @@ psql -U postgres -h localhost
 ```
 sudo apt install postgresql postgresql-contrib
 sudo -u postgres psql to connect to database
+\password
 ```
+
 [Create a user and give the user superuser and a password](https://medium.com/coding-blocks/creating-user-database-and-adding-access-on-postgresql-8bfcd2f4a91e)
 
 ALTER USER myuser WITH SUPERUSER;

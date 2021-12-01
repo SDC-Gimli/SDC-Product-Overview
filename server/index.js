@@ -14,8 +14,10 @@ app.get('/api/products', async (req, res) => {
   let response = {};
   response = await overview.getAllStyles(page, count);
   if (response === 0) {
-    res.sendStatus(400);
+    console.log('test')
+    res.sendStatus(400).end();
   }
+  console.log('what')
   res.send(response);
 });
 
@@ -36,7 +38,7 @@ app.get('/api/products/*', async (req, res) => {
     res.send(related_arr);
   } else {
   response = await overview.getInfo(product_id);
-  res.send(response);
+  res.send(response[0]);
   }
 });
 
